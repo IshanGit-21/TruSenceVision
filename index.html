@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>TruSenceVision — Intelligent Attendance</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<!-- ═══════════ SIDEBAR ═══════════ -->
+<aside id="sidebar">
+  <div class="sb-brand">
+    <div class="sb-logo">
+      <svg viewBox="0 0 24 24" stroke-width="2">
+        <circle cx="12" cy="8" r="4"/>
+        <path d="M4 20c0-4.418 3.582-8 8-8s8 3.582 8 8"/>
+        <circle cx="20" cy="5" r="2" fill="rgba(255,255,255,.55)" stroke="none"/>
+        <path d="M17.5 2.5l2.5 2.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <div>
+      <div class="sb-name">TruSence<em>Vision</em></div>
+      <div class="sb-tag">Attendance System</div>
+    </div>
+  </div>
+
+  <nav class="sb-nav">
+    <div class="sb-lbl">Navigation</div>
+
+    <div class="nav-item on" data-page="dashboard">
+      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      Dashboard
+    </div>
+    <div class="nav-item" data-page="register">
+      <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+      Register Student
+    </div>
+    <div class="nav-item" data-page="session">
+      <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+      Live Session
+    </div>
+    <div class="nav-item" data-page="attendance">
+      <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+      Attendance
+    </div>
+    <div class="nav-item" data-page="students">
+      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Students
+    </div>
+  </nav>
+
+  <div class="sb-foot">
+    <div class="srv">
+      <div class="dot" id="srvDot"></div>
+      <span id="srvTxt">Checking server…</span>
+    </div>
+  </div>
+</aside>
+
+<!-- ═══════════ CONTENT ═══════════ -->
+<div id="content">
+
+  <!-- TOPBAR -->
+  <div id="topbar">
+    <div>
+      <h1 id="topTitle">Dashboard</h1>
+      <p id="topSub">Overview of your attendance system</p>
+    </div>
+    <div class="tb-r">
+      <div class="tchip">
+        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span id="clockDate">—</span>
+      </div>
+      <div class="tchip">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span id="clockTime">—</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ DASHBOARD ═══ -->
+  <div class="page active" id="page-dashboard">
+
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-lbl"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>Students</div>
+        <div class="stat-num" id="s-stu">—</div>
+        <div class="stat-sub">Registered &amp; encoded</div>
+      </div>
+      <div class="stat">
+        <div class="stat-lbl"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Sessions</div>
+        <div class="stat-num" id="s-sess">—</div>
+        <div class="stat-sub">All time classes</div>
+      </div>
+      <div class="stat hi">
+        <div class="stat-lbl"><svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Present Today</div>
+        <div class="stat-num" id="s-today">—</div>
+        <div class="stat-sub">Across all today's sessions</div>
+      </div>
+      <div class="stat">
+        <div class="stat-lbl"><svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>Status</div>
+        <div class="stat-num" id="s-live" style="font-size:22px;color:var(--ink3)">Inactive</div>
+        <div class="stat-sub" id="s-live-sub">No active session</div>
+      </div>
+    </div>
+
+    <div class="dash-grid">
+      <div class="card">
+        <div class="card-hd"><div class="card-t">Quick Actions</div></div>
+        <div class="acts">
+          <div class="act cta" onclick="nav('session')">
+            <div class="act-ic"><svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg></div>
+            <div class="act-body">
+              <div class="act-nm">Start a Class</div>
+              <div class="act-ds">Begin live attendance session now</div>
+            </div>
+            <div class="act-ar">→</div>
+          </div>
+          <div class="act" onclick="nav('register')">
+            <div class="act-ic"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg></div>
+            <div class="act-body">
+              <div class="act-nm">Register Student</div>
+              <div class="act-ds">Add student with face capture</div>
+            </div>
+            <div class="act-ar">→</div>
+          </div>
+          <div class="act" onclick="nav('attendance')">
+            <div class="act-ic"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+            <div class="act-body">
+              <div class="act-nm">View Attendance</div>
+              <div class="act-ds">Browse past session records</div>
+            </div>
+            <div class="act-ar">→</div>
+          </div>
+          <div class="act" onclick="nav('students')">
+            <div class="act-ic"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+            <div class="act-body">
+              <div class="act-nm">Manage Students</div>
+              <div class="act-ds">View and edit registered students</div>
+            </div>
+            <div class="act-ar">→</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd">
+          <div class="card-t">Recent Sessions</div>
+          <button class="btn btn-ghost btn-sm" onclick="nav('attendance')">View all →</button>
+        </div>
+        <div id="dashRecent">
+          <div class="empty"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>No sessions yet.<br>Start a class to see records here.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd"><div class="card-t">How It Works</div></div>
+      <div class="steps">
+        <div class="step"><div class="step-n">STEP 01</div><h4>Register</h4><p>Capture student photo. Face encoded via dlib into encodings.pkl for fast matching.</p></div>
+        <div class="step"><div class="step-n">STEP 02</div><h4>Start Session</h4><p>Begin class. Continuous checks fire every 15 seconds throughout the entire class.</p></div>
+        <div class="step"><div class="step-n">STEP 03</div><h4>Detect &amp; Match</h4><p>OpenCV DNN detects faces every 15 frames. face_recognition matches known students.</p></div>
+        <div class="step"><div class="step-n">STEP 04</div><h4>Mark Attendance</h4><p>≥75% checks = Present. All data logged to SQLite with full timestamps.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ REGISTER ═══ -->
+  <div class="page" id="page-register">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+
+      <div class="card">
+        <div class="card-hd"><div class="card-t">Student Details</div></div>
+        <div class="cap-note" id="capNotice">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <div><strong>No face captured yet</strong><span>Use the camera to capture 10 photos first</span></div>
+        </div>
+        <form id="regForm">
+          <div class="fr">
+            <div class="fg"><label class="lbl">Full Name <span class="req">*</span></label><input class="inp" id="r-name" placeholder="e.g. Ishan Prasad" required /></div>
+            <div class="fg"><label class="lbl">Roll Number <span class="req">*</span></label><input class="inp" id="r-roll" placeholder="e.g. 23036124" required /></div>
+          </div>
+          <div class="fr">
+            <div class="fg"><label class="lbl">Class / Section <span class="req">*</span></label><input class="inp" id="r-class" placeholder="e.g. IT-6A" required /></div>
+            <div class="fg">
+              <label class="lbl">Semester</label>
+              <select class="inp" id="r-sem">
+                <option value="1">Semester 1</option><option value="2">Semester 2</option>
+                <option value="3">Semester 3</option><option value="4">Semester 4</option>
+                <option value="5">Semester 5</option><option value="6" selected>Semester 6</option>
+                <option value="7">Semester 7</option><option value="8">Semester 8</option>
+              </select>
+            </div>
+          </div>
+          <div class="fg"><label class="lbl">Email (optional)</label><input class="inp" id="r-email" type="email" placeholder="student@college.edu" /></div>
+          <div style="display:flex;gap:10px;margin-top:8px;">
+            <button type="button" class="btn btn-ghost" onclick="clearReg()">Clear</button>
+            <button type="submit" class="btn btn-green" id="regBtn" disabled style="flex:1;justify-content:center;">
+              <svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+              Register Student
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="card-hd">
+          <div class="card-t">Face Capture</div>
+          <span class="tag t-teal" id="capCount">0 / 10 photos</span>
+        </div>
+        <div class="cam" id="camBox">
+          <div class="cam-ph" id="camPH">
+            <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            <p>Camera preview</p><small>Click "Open Camera" to begin</small>
+          </div>
+          <video id="camVideo" autoplay playsinline></video>
+          <canvas id="camCanvas" style="display:none;"></canvas>
+          <div class="brk tl"></div><div class="brk tr"></div>
+          <div class="brk bl"></div><div class="brk br"></div>
+        </div>
+        <div class="thumbs">
+          <div style="display:flex;gap:8px;margin-bottom:6px;">
+            <div class="thumb" id="th0"></div><div class="thumb" id="th1"></div>
+            <div class="thumb" id="th2"></div><div class="thumb" id="th3"></div>
+            <div class="thumb" id="th4"></div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <div class="thumb" id="th5"></div><div class="thumb" id="th6"></div>
+            <div class="thumb" id="th7"></div><div class="thumb" id="th8"></div>
+            <div class="thumb" id="th9"></div>
+          </div>
+        </div>
+        <div class="cam-btns">
+          <button class="btn btn-ghost" id="camOpenBtn" onclick="openCam()">
+            <svg viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            Open Camera
+          </button>
+          <button class="btn btn-green" id="camCaptureBtn" onclick="doCapture()" disabled>
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="9"/></svg>
+            Capture
+          </button>
+          <button class="btn btn-ghost btn-sm" onclick="resetCam()">Reset</button>
+        </div>
+        <div class="cam-tip">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Capture <strong>10 photos</strong> from different angles, lighting and expressions for best accuracy.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ SESSION ═══ -->
+  <div class="page" id="page-session">
+
+    <div id="sess-start">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;">
+        <div class="card">
+          <div class="card-hd"><div class="card-t">Session Setup</div></div>
+
+          <div class="fg">
+            <label class="lbl">Subject / Class Name <span class="req">*</span></label>
+            <input class="inp" id="sessSubj" placeholder="e.g. Data Structures — IT-6A" />
+          </div>
+
+          <div class="fr">
+            <div class="fg">
+              <label class="lbl">Class Date</label>
+              <input class="inp" id="sessDate" type="date" />
+            </div>
+            <div class="fg">
+              <label class="lbl">Start Time</label>
+              <input class="inp" id="sessTime" type="time" />
+            </div>
+          </div>
+
+          <div class="fg">
+            <label class="lbl">Class Duration</label>
+            <div class="range-row">
+              <input type="range" id="sessDuration" min="1" max="120" value="60" step="1"
+                     oninput="document.getElementById('durVal').textContent=this.value+' min'" />
+              <span class="rv" id="durVal">60 min</span>
+            </div>
+            <div class="fhint">Detection runs continuously for this duration then auto-stops</div>
+          </div>
+
+          <div class="fg">
+            <label class="lbl">Presence Threshold</label>
+            <div class="range-row">
+              <input type="range" id="sessThresh" min="50" max="100" value="75"
+                     oninput="document.getElementById('threshVal').textContent=this.value+'%'" />
+              <span class="rv" id="threshVal">75%</span>
+            </div>
+            <div class="fhint">Student must be detected in ≥ this % of the session to be Present</div>
+          </div>
+
+          <div style="font-size:12px;color:var(--ink3);margin-bottom:18px;" id="sessRegCount">Loading…</div>
+          <input type="hidden" id="sessMin" value="3" />
+          <input type="hidden" id="sessMax" value="5" />
+          <button class="btn btn-green btn-full" onclick="startSession()">
+            <svg viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Start Class
+          </button>
+        </div>
+        <div class="card">
+          <div class="card-hd"><div class="card-t">Schedule Info</div></div>
+          <div style="padding:8px 0;">
+            <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:20px;">
+              <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--panel2);border:1px solid var(--line);border-radius:var(--rad-sm);">
+                <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--g500);fill:none;flex-shrink:0"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                <div><div style="font-size:11px;color:var(--ink3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em">Scheduled</div><div style="font-size:13px;font-weight:600;color:var(--ink)" id="schedDisplay">Set date &amp; time above</div></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--panel2);border:1px solid var(--line);border-radius:var(--rad-sm);">
+                <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--g500);fill:none;flex-shrink:0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <div><div style="font-size:11px;color:var(--ink3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em">Duration</div><div style="font-size:13px;font-weight:600;color:var(--ink)" id="durDisplay">60 minutes</div></div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--panel2);border:1px solid var(--line);border-radius:var(--rad-sm);">
+                <svg viewBox="0 0 24 24" style="width:16px;height:16px;stroke:var(--g500);fill:none;flex-shrink:0"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                <div><div style="font-size:11px;color:var(--ink3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em">Students</div><div style="font-size:13px;font-weight:600;color:var(--ink)" id="sessRegCount2">—</div></div>
+              </div>
+            </div>
+            <div style="padding:14px;background:var(--g050);border:1px solid rgba(42,122,82,.15);border-radius:var(--rad-sm);">
+              <div style="font-size:11.5px;font-weight:600;color:var(--g700);margin-bottom:6px;">How detection works</div>
+              <div style="font-size:12px;color:var(--ink2);line-height:1.6;">Camera runs for the full duration. Checks fire every 15 seconds. If detected in ≥75% of checks, student is marked <strong>Present</strong>.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="sess-live" style="display:none;">
+      <div class="live-bar">
+        <div class="live-dot"></div>
+        <span class="live-lbl">Live — <span id="liveSubj"></span></span>
+        <span class="live-clock" id="liveTimer">00:00:00</span>
+      </div>
+      <div class="sess-grid">
+        <div>
+          <div class="cam wide" style="margin-bottom:14px;">
+            <img id="liveFeed" src="" alt="Live" style="width:100%;height:100%;object-fit:cover;" />
+            <div class="brk tl"></div><div class="brk tr"></div>
+            <div class="brk bl"></div><div class="brk br"></div>
+            <div class="chk-ov" id="checkOverlay">
+              <div class="chk-box"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Verification check running…</div>
+            </div>
+          </div>
+          <div class="lstats">
+            <div class="lstat"><span class="lstat-n" id="lv-checks">0</span><div class="lstat-l">Checks Done</div></div>
+            <div class="lstat"><span class="lstat-n" id="lv-present">0</span><div class="lstat-l">Present</div></div>
+            <div class="lstat"><span class="lstat-n" id="lv-next">—</span><div class="lstat-l">Next Check In</div></div>
+            <div class="lstat"><span class="lstat-n" id="lv-total">—</span><div class="lstat-l">Total</div></div>
+          </div>
+          <button class="btn btn-red btn-full" style="margin-top:14px;" onclick="stopSession()">
+            <svg viewBox="0 0 24 24"><rect x="6" y="6" width="12" height="12"/></svg>
+            Stop Class &amp; Save Attendance
+          </button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div class="card" style="flex:1;">
+            <div class="card-hd">
+              <div class="card-t">Detection Log</div>
+              <span class="tag t-red" style="animation:blink 1.2s infinite">● Live</span>
+            </div>
+            <div class="det-log" id="detLog">
+              <div class="empty" style="padding:14px;"><p>Waiting for first check…</p></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="card-hd"><div class="card-t">Student Status</div><span style="font-size:11px;color:var(--ink3)">Attend % | Engagement</span></div>
+            <div class="stu-ll" id="stuLiveList">
+              <div class="empty" style="padding:12px;"><p>Loading…</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="sess-ended" style="display:none;">
+      <div class="ended-wrap">
+        <div class="ended-ok">
+          <div class="ended-ico"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <div>
+            <div class="ended-title">Session Complete</div>
+            <div class="ended-sub" id="endedSub">Attendance has been saved.</div>
+          </div>
+        </div>
+        <div class="res-cards" id="resultCards"></div>
+        <div style="display:flex;gap:12px;justify-content:center;">
+          <button class="btn btn-ghost" onclick="resetSess()">New Session</button>
+          <button class="btn btn-green" onclick="nav('attendance')">View Attendance →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ ATTENDANCE ═══ -->
+  <div class="page" id="page-attendance">
+    <div style="display:flex;justify-content:flex-end;margin-bottom:20px;">
+      <button class="btn btn-ghost btn-sm" onclick="exportCSV()">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export CSV
+      </button>
+    </div>
+    <div class="att-layout">
+      <div class="card">
+        <div class="card-hd">
+          <div class="card-t">Sessions</div>
+          <span class="tag t-teal" id="attSessCount">0</span>
+        </div>
+        <div class="sess-list" id="sessList">
+          <div class="empty" style="padding:20px;"><p>No sessions yet</p></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-hd">
+          <div class="card-t" id="attTitle">Select a session</div>
+          <div id="attBadges" style="display:none;gap:6px;">
+            <span class="tag t-green" id="attPBadge">0 Present</span>
+            <span class="tag t-red"   id="attABadge">0 Absent</span>
+          </div>
+        </div>
+        <div class="att-sum" id="attSum" style="display:none;">
+          <div class="as-c"><span class="as-n" id="as-total">—</span><div class="as-l">Students</div></div>
+          <div class="as-c"><span class="as-n" id="as-p" style="color:var(--ok)">—</span><div class="as-l">Present</div></div>
+          <div class="as-c"><span class="as-n" id="as-a" style="color:var(--err)">—</span><div class="as-l">Absent</div></div>
+          <div class="as-c"><span class="as-n" id="as-chk">—</span><div class="as-l">Checks</div></div>
+          <div class="as-c"><span class="as-n" id="as-dur">—</span><div class="as-l">Duration</div></div>
+        </div>
+        <!-- Charts row -->
+        <div id="attCharts" style="display:none;gap:16px;margin-bottom:20px;grid-template-columns:1fr 1fr;">
+          <div style="background:var(--panel2);border:1px solid var(--line);border-radius:var(--rad);padding:18px;">
+            <div style="font-size:12px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:14px;">Present vs Absent</div>
+            <div style="display:flex;align-items:center;gap:20px;">
+              <canvas id="donutChart" width="130" height="130"></canvas>
+              <div id="donutLegend" style="display:flex;flex-direction:column;gap:8px;"></div>
+            </div>
+          </div>
+          <div style="background:var(--panel2);border:1px solid var(--line);border-radius:var(--rad);padding:18px;">
+            <div style="font-size:12px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:14px;">Student Detection %</div>
+            <canvas id="barChart" width="100%" height="130"></canvas>
+          </div>
+        </div>
+
+        <div id="attTable">
+          <div class="empty"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><p>Click a session on the left to see attendance details</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ STUDENTS ═══ -->
+  <div class="page" id="page-students">
+    <div class="stu-bar">
+      <div class="srch">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input id="stuSearch" placeholder="Search name or roll number…" oninput="filterStu()" />
+      </div>
+      <select class="fsel" id="stuEncFilter" onchange="filterStu()">
+        <option value="">All Status</option>
+        <option value="yes">Face Encoded</option>
+        <option value="no">Pending</option>
+      </select>
+      <span style="flex:1;"></span>
+      <span style="font-size:12px;color:var(--ink3);" id="stuCount">—</span>
+      <button class="btn btn-green btn-sm" onclick="nav('register')">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add Student
+      </button>
+    </div>
+    <div class="card">
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr><th>Student</th><th>Roll No</th><th>Class</th><th>Semester</th><th>Face Status</th><th>Registered</th><th></th></tr>
+          </thead>
+          <tbody id="stuTbody">
+            <tr><td colspan="7" style="text-align:center;padding:32px;color:var(--ink3)">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /content -->
+
+<!-- TOASTS -->
+<div class="toast t-ok" id="toastOk">
+  <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+  <span id="toastOkMsg"></span>
+</div>
+<div class="toast t-err" id="toastErr">
+  <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+  <span id="toastErrMsg"></span>
+</div>
+
+<!-- DELETE MODAL -->
+<div class="modal-bg" id="delModal">
+  <div class="modal">
+    <div class="modal-ico"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></div>
+    <div class="modal-title">Delete Student?</div>
+    <div class="modal-body" id="delMsg">This will permanently remove this student and all face data.</div>
+    <div class="modal-btns">
+      <button class="btn btn-ghost" onclick="closeDel()">Cancel</button>
+      <button class="btn btn-red" id="delConfirmBtn">Delete</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
